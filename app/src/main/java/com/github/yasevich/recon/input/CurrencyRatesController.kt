@@ -9,15 +9,17 @@ class CurrencyRatesController(private val currencyRateRepository: CurrencyRateRe
 
     override var output: CurrencyRatesOutput? = null
 
+    private var currencyCode: String? = null
     private var baseAmount: BigDecimal = BigDecimal.ONE
 
     private var currencyRates: List<CurrencyRateModel> = emptyList()
 
     override fun requestCurrencyRates(currencyCode: String?) {
         if (currencyCode != null) {
+            this.currencyCode = currencyCode
             updateBaseAmount(currencyCode)
         }
-        currencyRates = currencyRateRepository.selectAll(currencyCode)
+        currencyRates = currencyRateRepository.selectAll(this.currencyCode)
         calculateRates()
     }
 

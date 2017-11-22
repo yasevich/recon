@@ -3,22 +3,25 @@ package com.github.yasevich.recon
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import com.github.yasevich.recon.input.CurrencyRatesController
-import com.github.yasevich.recon.input.RecurrentCurrencyRatesController
-import com.github.yasevich.recon.input.WorkerThreadCurrencyRatesController
+import com.github.yasevich.recon.input.CurrencyRatesControllerFragment
+import com.github.yasevich.recon.input.CurrencyRatesInput
 import com.github.yasevich.recon.output.CurrencyRatesPresenter
 import com.github.yasevich.recon.output.MainThreadCurrencyRatesOutput
-import com.github.yasevich.recon.repository.NetworkCurrencyRateRepository
 import com.github.yasevich.recon.view.CurrencyRatesAdapter
 import com.github.yasevich.recon.view.CurrencyRatesView
 import com.github.yasevich.recon.viewmodel.CurrencyRatesViewModel
 
 class MainActivity : AppCompatActivity(), CurrencyRatesView, CurrencyRatesAdapter.EventListener {
 
-    private val controller = WorkerThreadCurrencyRatesController(
-            RecurrentCurrencyRatesController(
-                    CurrencyRatesController(
-                            NetworkCurrencyRateRepository())))
+    private val controller: CurrencyRatesInput by lazy {
+        val tag = CurrencyRatesControllerFragment::class.java.name
+        supportFragmentManager.findFragmentByTag(tag) as CurrencyRatesControllerFragment? ?:
+                CurrencyRatesControllerFragment().also {
+                    supportFragmentManager.beginTransaction()
+                            .add(it, tag)
+                            .commit()
+                }
+    }
 
     private val adapter = CurrencyRatesAdapter(this)
 

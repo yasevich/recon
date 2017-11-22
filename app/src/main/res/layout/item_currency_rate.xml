@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:inputType="numberDecimal"
+        android:maxWidth="160dp"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:hint="@string/input_hint"
