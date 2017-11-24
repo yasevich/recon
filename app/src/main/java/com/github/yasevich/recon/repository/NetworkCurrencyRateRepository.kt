@@ -10,8 +10,6 @@ import javax.net.ssl.HttpsURLConnection
 
 class NetworkCurrencyRateRepository : CurrencyRateRepository {
 
-    override fun selectAll(): List<CurrencyRateModel> = selectAll(null)
-
     override fun selectAll(currencyCode: String?): List<CurrencyRateModel> {
         val base = if (currencyCode.isNullOrBlank()) "" else "?base=$currencyCode"
         val connection = URL("https://revolut.duckdns.org/latest$base").openConnection() as HttpsURLConnection
